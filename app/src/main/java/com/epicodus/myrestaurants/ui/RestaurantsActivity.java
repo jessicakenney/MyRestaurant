@@ -1,12 +1,16 @@
-package com.epicodus.myrestaurants;
+package com.epicodus.myrestaurants.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
-import android.widget.TextView;
+
+import com.epicodus.myrestaurants.R;
+import com.epicodus.myrestaurants.adapters.RestaurantListAdapter;
+import com.epicodus.myrestaurants.models.Restaurant;
+import com.epicodus.myrestaurants.services.YelpService;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -19,8 +23,9 @@ import okhttp3.Response;
 
 public class RestaurantsActivity extends AppCompatActivity {
     public static final String TAG = RestaurantsActivity.class.getSimpleName();
-    @Bind(R.id.locationTextView) TextView mLocationTextView;
-    @Bind(R.id.listView) ListView mListView;
+//    @Bind(R.id.listView) ListView mListView;
+    @Bind(R.id.recyclerView) RecyclerView mRecyclerView;
+    private RestaurantListAdapter mAdapter;
     public ArrayList<Restaurant> restaurants = new ArrayList<>();
 
     @Override
@@ -29,22 +34,11 @@ public class RestaurantsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_restaurants);
         ButterKnife.bind(this);
 
-//        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-//                String restaurant = ((TextView)view).getText().toString();
-//                Toast.makeText(RestaurantsActivity.this, restaurant, Toast.LENGTH_LONG).show();
-//            }
-//        });
-
         Intent intent = getIntent();
         String location = intent.getStringExtra("location");
 
-        mLocationTextView.setText("Here are all the restaurants near: " + location);
         getRestaurants(location);
     }
-
-
 
     private void getRestaurants(String location) {
         final YelpService yelpService = new YelpService();
@@ -58,18 +52,16 @@ public class RestaurantsActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call call, Response response) {
                     restaurants = yelpService.processResults(response);
-                    Log.d(TAG, ">>> Number of Restaurants"+restaurants.size() );
 
                     RestaurantsActivity.this.runOnUiThread(new Runnable() {
 
                         @Override
                         public void run() {
-                            String [] restaurantNames = new String[restaurants.size()];
-                            for (int i =0; i < restaurantNames.length; i++){
-                               restaurantNames[i] = restaurants.get(i).getName();
-                            }
-                            ArrayAdapter adapter = new ArrayAdapter(RestaurantsActivity.this, android.R.layout.simple_list_item_1, restaurantNames);
-                            mListView.setAdapter(adapter);
+                            mAdapter = new RestaurantListAdapter(getApplicationContext(), restaurants);
+                            mRecyclerView.setAdapter(mAdapter);
+                            RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(RestaurantsActivity.this);
+                            mRecyclerView.setLayoutManager(layoutManager);
+                            mRecyclerView.setHasFixedSize(true);
 
                             for (Restaurant restaurant : restaurants) {
                                 Log.d(TAG, "Name: " + restaurant.getName());

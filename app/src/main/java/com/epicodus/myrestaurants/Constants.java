@@ -1,5 +1,7 @@
 package com.epicodus.myrestaurants;
 
+import com.epicodus.myrestaurants.BuildConfig;
+
 /**
  * Created by momma on 10/17/17.
  */
