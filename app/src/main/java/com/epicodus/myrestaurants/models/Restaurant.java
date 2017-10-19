@@ -55,6 +55,11 @@ public class Restaurant {
         return imageUrl;
     }
 
+//    public String getLargeImageUrl(String imageUrl) {
+//        String largeImageUrl = imageUrl.substring(0, imageUrl.length() - 5).concat("o.jpg");
+//        return largeImageUrl;
+//    }
+
     public ArrayList<String> getAddress() {
         return address;
     }
