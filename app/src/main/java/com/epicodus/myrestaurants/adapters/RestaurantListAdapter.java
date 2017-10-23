@@ -3,6 +3,7 @@ package com.epicodus.myrestaurants.adapters;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,6 +46,7 @@ public class RestaurantListAdapter extends RecyclerView.Adapter<RestaurantListAd
 
     @Override
     public void onBindViewHolder(RestaurantListAdapter.RestaurantViewHolder holder, int position) {
+//        Log.v("onBindGotCalled", String.valueOf(position));
         holder.bindRestaurant(mRestaurants.get(position));
     }
 
