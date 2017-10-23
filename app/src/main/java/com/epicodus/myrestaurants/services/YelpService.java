@@ -53,6 +53,7 @@ public class YelpService {
             String jsonData = response.body().string();
             JSONObject yelpJSON = new JSONObject(jsonData);
             JSONArray businessesJSON = yelpJSON.getJSONArray("businesses");
+
             for (int i = 0; i < businessesJSON.length(); i++) {
                 JSONObject restaurantJSON = businessesJSON.getJSONObject(i);
                 String name = restaurantJSON.getString("name");
