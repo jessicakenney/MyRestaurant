@@ -29,8 +29,8 @@ import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
 
-public class RestaurantsActivity extends AppCompatActivity {
-    public static final String TAG = RestaurantsActivity.class.getSimpleName();
+public class RestaurantListActivity extends AppCompatActivity {
+    public static final String TAG = RestaurantListActivity.class.getSimpleName();
     @Bind(R.id.recyclerView) RecyclerView mRecyclerView;
     private RestaurantListAdapter mAdapter;
     public ArrayList<Restaurant> restaurants = new ArrayList<>();
@@ -41,7 +41,7 @@ public class RestaurantsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_restaurants);
+        setContentView(R.layout.activity_restaurant_list);
         ButterKnife.bind(this);
 
         Intent intent = getIntent();
@@ -49,12 +49,12 @@ public class RestaurantsActivity extends AppCompatActivity {
 
         getRestaurants(location);
 
-        //mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-//        mRecentAddress = mSharedPreferences.getString(Constants.PREFERENCES_LOCATION_KEY, null);
-//
-//        if (mRecentAddress != null) {
-//            getRestaurants(mRecentAddress);
-//        }
+        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        mRecentAddress = mSharedPreferences.getString(Constants.PREFERENCES_LOCATION_KEY, null);
+
+        if (mRecentAddress != null) {
+            getRestaurants(mRecentAddress);
+        }
 
     }
 
@@ -70,6 +70,21 @@ public class RestaurantsActivity extends AppCompatActivity {
         MenuItem menuItem = menu.findItem(R.id.action_search);
         SearchView searchView = (SearchView) MenuItemCompat.getActionView(menuItem);
 
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                addToSharedPreferences(query);
+                getRestaurants(query);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+
+        });
         return true;
     }
 
@@ -91,13 +106,13 @@ public class RestaurantsActivity extends AppCompatActivity {
             public void onResponse(Call call, Response response) {
                     restaurants = yelpService.processResults(response);
 
-                    RestaurantsActivity.this.runOnUiThread(new Runnable() {
+                    RestaurantListActivity.this.runOnUiThread(new Runnable() {
 
                         @Override
                         public void run() {
                             mAdapter = new RestaurantListAdapter(getApplicationContext(), restaurants);
                             mRecyclerView.setAdapter(mAdapter);
-                            RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(RestaurantsActivity.this);
+                            RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(RestaurantListActivity.this);
                             mRecyclerView.setLayoutManager(layoutManager);
                             mRecyclerView.setHasFixedSize(true);
 
