@@ -1,7 +1,5 @@
 package com.epicodus.myrestaurants;
 
-import com.epicodus.myrestaurants.BuildConfig;
-
 /**
  * Created by momma on 10/17/17.
  */
@@ -13,4 +11,5 @@ public class Constants {
     public static final String FIREBASE_CHILD_SEARCHED_LOCATION = "searchedLocation";
     public static final String FIREBASE_CHILD_RESTAURANTS = "restaurants";
     public static final String PREFERENCES_LOCATION_KEY = "location";
+    public static final String FIREBASE_QUERY_INDEX = "index";
 }
