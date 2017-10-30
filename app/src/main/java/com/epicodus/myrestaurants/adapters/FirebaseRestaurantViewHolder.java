@@ -22,6 +22,8 @@ import org.parceler.Parcels;
 
 import java.util.ArrayList;
 
+import static com.epicodus.myrestaurants.R.id.restaurantImageView;
+
 /**
  * Created by Guest on 10/23/17.
  */
@@ -32,6 +34,7 @@ public class FirebaseRestaurantViewHolder extends RecyclerView.ViewHolder implem
 
     View mView;
     Context mContext;
+    public ImageView mRestaurantImageView;
 
     public FirebaseRestaurantViewHolder(View itemView) {
         super(itemView);
@@ -41,7 +44,7 @@ public class FirebaseRestaurantViewHolder extends RecyclerView.ViewHolder implem
     }
 
     public void bindRestaurant(Restaurant restaurant) {
-        ImageView restaurantImageView = (ImageView) mView.findViewById(R.id.restaurantImageView);
+        mRestaurantImageView = (ImageView) mView.findViewById(restaurantImageView);
         TextView nameTextView = (TextView) mView.findViewById(R.id.restaurantNameTextView);
         TextView categoryTextView = (TextView) mView.findViewById(R.id.categoryTextView);
         TextView ratingTextView = (TextView) mView.findViewById(R.id.ratingTextView);
@@ -50,7 +53,7 @@ public class FirebaseRestaurantViewHolder extends RecyclerView.ViewHolder implem
                 .load(restaurant.getImageUrl())
                 .resize(MAX_WIDTH, MAX_HEIGHT)
                 .centerCrop()
-                .into(restaurantImageView);
+                .into(mRestaurantImageView);
 
         nameTextView.setText(restaurant.getName());
         categoryTextView.setText(restaurant.getCategories().get(0));
