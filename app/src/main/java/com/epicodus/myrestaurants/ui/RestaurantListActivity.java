@@ -47,90 +47,90 @@ public class RestaurantListActivity extends AppCompatActivity {
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         mRecentAddress = mSharedPreferences.getString(Constants.PREFERENCES_LOCATION_KEY, null);
 
-        if (mRecentAddress != null) {
-            getRestaurants(mRecentAddress);
-        }
+//        if (mRecentAddress != null) {
+//            getRestaurants(mRecentAddress);
+//        }
 
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_search, menu);
-        ButterKnife.bind(this);
-
-        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        mEditor = mSharedPreferences.edit();
-
-        MenuItem menuItem = menu.findItem(R.id.action_search);
-        SearchView searchView = (SearchView) MenuItemCompat.getActionView(menuItem);
-
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                addToSharedPreferences(query);
-                getRestaurants(query);
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                return false;
-            }
-
-        });
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        return super.onOptionsItemSelected(item);
-    }
-
-    private void getRestaurants(String location) {
-        final YelpService yelpService = new YelpService();
-        yelpService.findRestaurants(location, new Callback() {
-
-            @Override
-            public void onFailure(Call call, IOException e) {
-                e.printStackTrace();
-            }
-
-            @Override
-            public void onResponse(Call call, Response response) {
-                    restaurants = yelpService.processResults(response);
-
-                    RestaurantListActivity.this.runOnUiThread(new Runnable() {
-
-                        @Override
-                        public void run() {
-                            mAdapter = new RestaurantListAdapter(getApplicationContext(), restaurants);
-                            mRecyclerView.setAdapter(mAdapter);
-                            RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(RestaurantListActivity.this);
-                            mRecyclerView.setLayoutManager(layoutManager);
-                            mRecyclerView.setHasFixedSize(true);
-
-                            for (Restaurant restaurant : restaurants) {
-                                Log.d(TAG, "Name: " + restaurant.getName());
-                                Log.d(TAG, "Phone: " + restaurant.getPhone());
-                                Log.d(TAG, "Website: " + restaurant.getWebsite());
-                                Log.d(TAG, "Image url: " + restaurant.getImageUrl());
-                                Log.d(TAG, "Rating: " + Double.toString(restaurant.getRating()));
-                                Log.d(TAG, "Address: " + android.text.TextUtils.join(", ", restaurant.getAddress()));
-                                Log.d(TAG, "Categories: " + restaurant.getCategories().toString());
-                            }
-
-                        }
-                    });
-
-            }
-
-        });
-    }
-
-
-    private void addToSharedPreferences(String location) {
-        mEditor.putString(Constants.PREFERENCES_LOCATION_KEY, location).apply();
-    }
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        MenuInflater inflater = getMenuInflater();
+//        inflater.inflate(R.menu.menu_search, menu);
+//        ButterKnife.bind(this);
+//
+//        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+//        mEditor = mSharedPreferences.edit();
+//
+//        MenuItem menuItem = menu.findItem(R.id.action_search);
+//        SearchView searchView = (SearchView) MenuItemCompat.getActionView(menuItem);
+//
+//        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+//
+//            @Override
+//            public boolean onQueryTextSubmit(String query) {
+//                addToSharedPreferences(query);
+//                getRestaurants(query);
+//                return false;
+//            }
+//
+//            @Override
+//            public boolean onQueryTextChange(String newText) {
+//                return false;
+//            }
+//
+//        });
+//        return true;
+//    }
+//
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        return super.onOptionsItemSelected(item);
+//    }
+//
+//    private void getRestaurants(String location) {
+//        final YelpService yelpService = new YelpService();
+//        yelpService.findRestaurants(location, new Callback() {
+//
+//            @Override
+//            public void onFailure(Call call, IOException e) {
+//                e.printStackTrace();
+//            }
+//
+//            @Override
+//            public void onResponse(Call call, Response response) {
+//                    restaurants = yelpService.processResults(response);
+//
+//                    RestaurantListActivity.this.runOnUiThread(new Runnable() {
+//
+//                        @Override
+//                        public void run() {
+//                            mAdapter = new RestaurantListAdapter(getApplicationContext(), restaurants);
+//                            mRecyclerView.setAdapter(mAdapter);
+//                            RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(RestaurantListActivity.this);
+//                            mRecyclerView.setLayoutManager(layoutManager);
+//                            mRecyclerView.setHasFixedSize(true);
+//
+//                            for (Restaurant restaurant : restaurants) {
+//                                Log.d(TAG, "Name: " + restaurant.getName());
+//                                Log.d(TAG, "Phone: " + restaurant.getPhone());
+//                                Log.d(TAG, "Website: " + restaurant.getWebsite());
+//                                Log.d(TAG, "Image url: " + restaurant.getImageUrl());
+//                                Log.d(TAG, "Rating: " + Double.toString(restaurant.getRating()));
+//                                Log.d(TAG, "Address: " + android.text.TextUtils.join(", ", restaurant.getAddress()));
+//                                Log.d(TAG, "Categories: " + restaurant.getCategories().toString());
+//                            }
+//
+//                        }
+//                    });
+//
+//            }
+//
+//        });
+//    }
+//
+//
+//    private void addToSharedPreferences(String location) {
+//        mEditor.putString(Constants.PREFERENCES_LOCATION_KEY, location).apply();
+//    }
 }
