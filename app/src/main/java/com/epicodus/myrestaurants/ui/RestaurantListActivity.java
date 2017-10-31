@@ -42,10 +42,10 @@ public class RestaurantListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_restaurant_list);
-        ButterKnife.bind(this);
-
-        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        mRecentAddress = mSharedPreferences.getString(Constants.PREFERENCES_LOCATION_KEY, null);
+//        ButterKnife.bind(this);
+//
+//        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+//        mRecentAddress = mSharedPreferences.getString(Constants.PREFERENCES_LOCATION_KEY, null);
 
 //        if (mRecentAddress != null) {
 //            getRestaurants(mRecentAddress);
