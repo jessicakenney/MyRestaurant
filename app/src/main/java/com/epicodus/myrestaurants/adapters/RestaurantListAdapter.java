@@ -27,6 +27,8 @@ import java.util.ArrayList;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
+import static com.epicodus.myrestaurants.ui.RestaurantListActivity.TAG;
+
 /**
  * Created by momma on 10/17/17.
  */
@@ -75,8 +77,10 @@ public class RestaurantListAdapter extends RecyclerView.Adapter<RestaurantListAd
             mContext = itemView.getContext();
             itemView.setOnClickListener(this);
 
+            // if you are in Landscape , a new layout including Detail Fragment
             mOrientation = itemView.getResources().getConfiguration().orientation;
             if (mOrientation == Configuration.ORIENTATION_LANDSCAPE) {
+                Log.v(TAG, "LANDSCAPE ORientation....add detail fragment");
                 createDetailFragment(0);
             }
 
@@ -84,8 +88,11 @@ public class RestaurantListAdapter extends RecyclerView.Adapter<RestaurantListAd
 
     // Takes position of restaurant in list as parameter:
     private void createDetailFragment(int position) {
+
         // Creates new RestaurantDetailFragment with the given position:
         RestaurantDetailFragment detailFragment = RestaurantDetailFragment.newInstance(mRestaurants, position);
+        Log.v(TAG, "LANDSCAPE ORientation....detail fragment being created");
+
         // Gathers necessary components to replace the FrameLayout in the layout with the RestaurantDetailFragment:
         FragmentTransaction ft = ((FragmentActivity) mContext).getSupportFragmentManager().beginTransaction();
         //  Replaces the FrameLayout with the RestaurantDetailFragment:
@@ -106,12 +113,6 @@ public class RestaurantListAdapter extends RecyclerView.Adapter<RestaurantListAd
                 mContext.startActivity(intent);
             }
 
-            //was
-//
-//            Intent intent = new Intent(mContext, RestaurantDetailActivity.class);
-//            intent.putExtra("position", itemPosition);
-//            intent.putExtra("restaurants", Parcels.wrap(mRestaurants));
-//            mContext.startActivity(intent);
         }
 
 
